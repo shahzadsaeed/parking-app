@@ -1,6 +1,6 @@
 class ReservationsController < ApplicationController
   before_action :authenticate_user
-  before_action :set_reservation, only: [:update, :destroy, :check_in, :check_out]
+  before_action :set_reservation, only: [:update, :destroy, :check_in, :check_out, :cancel]
 
   def index
     reservations = Reservation.all

@@ -1,4 +1,4 @@
-class AdminController < ApplicationController
+class Admin::AdminController < ApplicationController
   before_action :authenticate_user
   before_action :set_admin, only: [:update]
 

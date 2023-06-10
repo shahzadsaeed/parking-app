@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_06_06_193436) do
+ActiveRecord::Schema.define(version: 2023_06_10_165039) do
 
   create_table "admins", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -41,18 +41,34 @@ ActiveRecord::Schema.define(version: 2023_06_06_193436) do
     t.index ["reset_password_token"], name: "index_customers_on_reset_password_token", unique: true
   end
 
+  create_table "features", force: :cascade do |t|
+    t.string "name"
+    t.string "value"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "features_slots", id: false, force: :cascade do |t|
+    t.integer "features_id"
+    t.integer "slots_id"
+    t.index ["features_id"], name: "index_features_slots_on_features_id"
+    t.index ["slots_id"], name: "index_features_slots_on_slots_id"
+  end
+
   create_table "reservations", force: :cascade do |t|
     t.datetime "start_time"
     t.datetime "end_time"
     t.boolean "checked_in"
     t.boolean "checked_out"
-    t.integer "slots_id", null: false
-    t.integer "customers_id", null: false
+    t.integer "slot_id", null: false
+    t.integer "customer_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.float "cancellation_charges"
-    t.index ["customers_id"], name: "index_reservations_on_customers_id"
-    t.index ["slots_id"], name: "index_reservations_on_slots_id"
+    t.string "car_number_plate"
+    t.integer "status"
+    t.index ["customer_id"], name: "index_reservations_on_customer_id"
+    t.index ["slot_id"], name: "index_reservations_on_slot_id"
   end
 
   create_table "slots", force: :cascade do |t|
@@ -65,8 +81,10 @@ ActiveRecord::Schema.define(version: 2023_06_06_193436) do
     t.boolean "is_available"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "title"
+    t.boolean "available"
   end
 
-  add_foreign_key "reservations", "customers", column: "customers_id"
-  add_foreign_key "reservations", "slots", column: "slots_id"
+  add_foreign_key "reservations", "customers"
+  add_foreign_key "reservations", "slots"
 end

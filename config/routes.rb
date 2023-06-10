@@ -25,7 +25,11 @@ Rails.application.routes.draw do
   end
 
   namespace :customer do
-    resources :slots, only: %I[index show]
+    resources :slots, only: %I[index show] do
+      collection do
+        get 'filter_slots'
+      end
+    end
 
     resources :reservations, only: %I[index create update destroy] do
       member do
